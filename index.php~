@@ -126,6 +126,7 @@ $TOTAL = $CAMEL + $MQ;
                                             <div class="form-group">
                                                 <label>Capital Adequency</label>
                                                 <input type="number" class="form-control border-input" name="CAR" min="0" max="100">
+                                    <hr />
                                     <div class="stats">
                                         <b>Status Modal anda</b> <b><?php
                                         echo $sCAR;
