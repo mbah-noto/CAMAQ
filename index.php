@@ -246,7 +246,7 @@ $TOTAL = $CAMEL + $MQ;
 														<?php	                                            
                                             if (isset ($proses))
                                             	{
-                                            	if($MQ >= 81 and 100 ) {
+                                            	if($MQ >= 81 and $MQ == 100 ) {
                                             		$predikat = "Sehat";
                                             	}
                                             	if($MQ >= 66 and $MQ < 81 ) {
@@ -290,7 +290,7 @@ $TOTAL = $CAMEL + $MQ;
                                             <?php
                                             if (isset ($proses))
                                             	{
-                                            	if($TOTAL >= 81 and 100 ) {
+                                            	if($TOTAL >= 81 and $TOTAL == 100 ) {
                                             		$predikat = "Sehat";
                                             	}
                                             	if($TOTAL >= 66 and $TOTAL < 81 ) {
