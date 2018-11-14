@@ -43,17 +43,16 @@ $FR = $_POST["FR"];
 $PBH = $_POST["PBH"];
 $ZR = $_POST["ZR"];
 $proses = $_POST["proses"];
-//$nCAR = $CAR;
-$nNPF = ((15.5 - $NPF)/0.15)*0.30;
-$nROA = ($ROA/0.015)*0.30;
-$nFDR = ((115 - $FDR)*4)*0.15;
-$nPDS = ($PDS/0.05)*0.2;
-//$nFR = $FR;
-$nPBH = ($PBH/0.05)*0.3;
-$nZR = ($ZR/0.01)*0.2;
-$CAMEL = $CAR + $nNPF + $nROA + $nFDR;
-$MQ = $nPDS + $FR + $nPBH + $nZR;
-$TOTAL = $CAMEL + $MQ;
+
+$CAMEL = 0;
+echo $CAMEL; 
+
+$MQ = 0;
+echo $MQ;
+
+$TOTAL = 0;
+echo $TOTAL;
+
 ?>
 <div class="wrapper">
     <div class="sidebar" data-background-color="white" data-active-color="danger">
@@ -125,7 +124,7 @@ $TOTAL = $CAMEL + $MQ;
                                         <div class="col-md-3 ">
                                             <div class="form-group">
                                                 <label>Capital Adequency</label>
-                                                <input type="number" class="form-control border-input" name="CAR" min="0" max="100">
+                                                <input type="number" step=".01" class="form-control border-input" name="CAR" min="0" max="100" required>
                                     <div class="stats">
                                         <b>Status Modal anda</b> <b><?php
                                         echo $sCAR;
@@ -136,19 +135,19 @@ $TOTAL = $CAMEL + $MQ;
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Assets Quality</label>
-                                                <input type="number" class="form-control border-input" name="NPF" min="0" max="100">
+                                                <input type="number" step=".01" class="form-control border-input" name="NPF" min="0" max="100" required>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Earning Ability</label>
-                                                <input type="number" class="form-control border-input" name="ROA" min="0" max="100">
+                                                <input type="number" step=".01" class="form-control border-input" name="ROA" min="0" max="100" required>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Liquidity Sufficienty</label>
-                                                <input type="number" class="form-control border-input" name="FDR" min="0" max="100">
+                                                <input type="number" step=".01" class="form-control border-input" name="FDR">
                                             </div>
                                         </div>
                                     </div>
@@ -157,25 +156,25 @@ $TOTAL = $CAMEL + $MQ;
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Pendidikan dan Sosialisasi</label>
-                                                <input type="number" class="form-control border-input" name="PDS" min="0" max="100">
+                                                <input type="number" step=".01" class="form-control border-input" name="PDS" min="0" max="100" required>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Fair Return</label>
-                                                <input type="number" class="form-control border-input" name="FR" min="0" max="100">
+                                                <input type="number" step=".01" class="form-control border-input" name="FR" min="0" max="100" required>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Produk Bagi Hasil</label>
-                                                <input type="number" class="form-control border-input" name="PBH" min="0" max="100">
+                                                <input type="number" step=".01" class="form-control border-input" name="PBH" min="0" max="100" required>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Kemasalahatan Umat</label>
-                                                <input type="number" class="form-control border-input" name="ZR" min="0" max="100">
+                                                <input type="number" step=".01" class="form-control border-input" name="ZR" min="0" max="100" required>
                                             </div>
                                         </div>
                                     </div>
@@ -202,8 +201,64 @@ $TOTAL = $CAMEL + $MQ;
                                         <h3>
                                             <?php
                                             if (isset ($proses))
+                                            
+                                           
+{
+/*Bobot CAR : 25%*/
+$bCAR = 0.25;
+$xCAR = (8*10+1) + ($CAR - 8) / 0.1;
+
+if ($xCAR > 100) {
+    $nCAR = 100*0.25;
+}else if ($xCAR < 0){
+	$nCAR = 0;
+} else {
+    $nCAR=$xCAR*0.25;
+}
+/*Bobot NPF : 30%*/
+$bNPF = 0.3;
+$xNPF = (15.5-$NPF)/0.15;
+
+if ($NPF >= 15.5) {
+    $nNPF = 0;
+}else {
+	$nNPF=$xNPF*0.3;
+}
+/*Bobot ROA : 30%*/
+$bROA = 0.3;
+$xROA = $ROA/0.015;
+	
+if ($ROA <= 0){
+	$nROA =0;
+}else if ($xROA >= 100){
+	$nROA=100*0.3;
+}else {
+	$nROA=$xROA*0.3;
+}
+/*Bobot FDR : 15%*/
+$bFDR = 0.15;
+$xFDR = (115-$FDR)*4;
+
+if ($FDR >= 115){
+	$nFDR = 0;
+}else if ($xFDR >= 100){
+	$nFDR = 100*0.15;
+} else {
+    $nFDR=$xFDR*0.15;
+}
+
+$CAMEL = $nCAR + $nNPF + $nROA + $nFDR;}
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
                                             	{
-                                            	if($CAMEL >= 81 and $CAMEL == 100 ) {
+                                                if($CAMEL >= 81 and $CAMEL <= 100 ) {
                                             		$predikat = "Sehat";
                                             	}
                                             	if($CAMEL >= 66 and $CAMEL < 81 ) {
@@ -245,8 +300,68 @@ $TOTAL = $CAMEL + $MQ;
                                         <h3>
 														<?php	                                            
                                             if (isset ($proses))
+                                            
+{
+/*Bobot PDS : 20%*/
+$bPDS = 0.2;
+$xPDS = $PDS/0.05;
+
+if ($xPDS > "100") {
+    $nPDS = 100*$bPDS;
+}else if ($xPDS <= "0"){
+	$nPDS = 0;
+} else {
+    $nPDS=$xPDS*$bPDS;
+}
+/*Bobot FR : 30%*/
+$bFR = 0.3;
+$xFR = 100-(($FR*10)/100)/0.5;
+
+if ($FR <= "10") {
+    $nFR = 100*$bFR;
+}else if ($xFR <= "0"){
+	$nFR = 0;
+} else {
+    $nFR=$xFR*$bFR;
+}
+/*Bobot PBH : 30%*/
+$bPBH = 0.3;
+$xPBH = $PBH/0.5;
+
+if ($PBH <= "0") {
+    $nPBH = 0;
+}else if ($xPBH >= "100"){
+	$nPBH = 100*$bPBH;
+} else {
+    $nPBH=$xPBH*$bPBH;
+}
+/*Bobot ZR : 20%*/
+$bZR = 0.2;
+$xZR = $ZR/0.01;
+
+if ($ZR <= "0") {
+    $nZR = 0;
+}else if ($xZR >= "100"){
+	$nZR = 100*$bZR;
+} else {
+    $nZR=$xZR*$bZR;
+}
+$MQ = $nPDS+$nFR+$nPBH+$nZR;
+}                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
                                             	{
-                                            	if($MQ >= 81 and $MQ == 100 ) {
+                                            	if($MQ >= 81 and 100 ) {
                                             		$predikat = "Sehat";
                                             	}
                                             	if($MQ >= 66 and $MQ < 81 ) {
@@ -289,8 +404,13 @@ $TOTAL = $CAMEL + $MQ;
                                         <h3> <b>
                                             <?php
                                             if (isset ($proses))
+                                            
+{
+$TOTAL = ($CAMEL*0.5) + ($MQ*0.5);
+}
+                                            
                                             	{
-                                            	if($TOTAL >= 81 and $TOTAL == 100 ) {
+                                            	if($TOTAL >= 81 and 100 ) {
                                             		$predikat = "Sehat";
                                             	}
                                             	if($TOTAL >= 66 and $TOTAL < 81 ) {
